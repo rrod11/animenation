@@ -11,18 +11,18 @@ if (process.env.NODE_ENV === "production") {
 module.exports = {
   async up(queryInterface, Sequelize) {
     await BlogCategory.bulkCreate([
-      {
-        blog_id: "1",
-        category_id: "2",
-      },
-      {
-        blog_id: "2",
-        category_id: "1",
-      },
-      {
-        blog_id: "3",
-        category_id: "2",
-      },
+      // {
+      //   blog_id: "1",
+      //   category_id: "2",
+      // },
+      // {
+      //   blog_id: "2",
+      //   category_id: "1",
+      // },
+      // {
+      //   blog_id: "3",
+      //   category_id: "2",
+      // },
     ]);
   },
 

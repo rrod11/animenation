@@ -12,18 +12,18 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await Category.bulkCreate(
       [
-        {
-          name: "Action",
-        },
-        {
-          name: "Adventure",
-        },
-        {
-          name: "Comedy",
-        },
-        {
-          name: "Reincarnation",
-        },
+        // {
+        //   name: "Action",
+        // },
+        // {
+        //   name: "Adventure",
+        // },
+        // {
+        //   name: "Comedy",
+        // },
+        // {
+        //   name: "Reincarnation",
+        // },
       ],
       { validate: true }
     );
