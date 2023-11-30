@@ -4,6 +4,11 @@ module.exports = (sequelize, DataTypes) => {
   class Category extends Model {
     static associate(models) {
       // define association here
+      Category.belongsToMany(models.BlogPost, {
+        through: "BlogCategory",
+        as: "Blog",
+        foreignKey: "blog_id",
+      });
     }
   }
   Category.init(

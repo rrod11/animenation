@@ -9,7 +9,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "post_id",
       });
       BlogPost.belongsTo(models.User, {
-        foreignKey: "user_id"
+        foreignKey: "user_id",
+      });
+      BlogPost.belongsToMany(models.Category, {
+        through: "BlogCategory",
+        as: "Categories",
+        foreignKey: "blog_id",
       });
     }
   }
