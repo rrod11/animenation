@@ -26,4 +26,62 @@ const validateReviewCreation = [
   handleValidationErrors,
 ];
 
+router.get("/", async (req, res) => {
+  const reviews = await Review.findAll({});
+  const reviewJSON = reviews.map((ele) => ele.toJSON());
+
+  for (review of reviewJSON) {
+    const reviewUser = await User.findOne({
+      where: {
+        id: review.userId,
+      },
+    });
+
+    const post = await Post.findOne({
+      where: {
+        id: review.postId,
+      },
+    });
+
+    review.name = `${reviewUser.lastName}, ${reviewUser.firstName}`;
+    review.postTitle = post.title;
+
+    delete review.userId;
+    delete review.postId;
+  }
+  res.status(200).json(reviewJSON);
+});
+
+router.post(
+  "/:postId",
+  [requireAuth, validateReviewCreation],
+  async (req, res) => {
+    const { user } = req;
+    const { review, rating } = req.body;
+    const postId = req.params.postId;
+
+    const newReview = await Review.bulkCreate([
+      {
+        review,
+        rating,
+        postId,
+        userId: user.id,
+      },
+    ]);
+    const target = await Review.findOne({
+      where: {
+        review,
+        rating,
+        postId,
+        userId: user.id,
+      },
+    });
+    res.status(201).json(target);
+  }
+);
+
+router.get("/current", async (req, res) => {
+  const { user } = req;
+});
+
 module.exports = router;
