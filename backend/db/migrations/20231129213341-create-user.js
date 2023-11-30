@@ -38,6 +38,10 @@ module.exports = {
           type: Sequelize.STRING.BINARY,
           allowNull: false,
         },
+        // adminKey: {
+        //   type: Sequelize.STRING(60),
+        //   allowNull: true,
+        // },
         createdAt: {
           allowNull: false,
           type: Sequelize.DATE,

@@ -16,6 +16,7 @@ module.exports = {
           email: "asta@user.io",
           username: "asta",
           hashedPassword: bcrypt.hashSync("password"),
+          // adminKey: "roderick"
           firstName: "Asta",
           lastName: "Staria",
         },
@@ -24,14 +25,23 @@ module.exports = {
           username: "yuno",
           hashedPassword: bcrypt.hashSync("password"),
           firstName: "Yuno",
+          // adminKey: "roderick"
           lastName: "Grinberryall",
         },
         {
           email: "yami@user.io",
           username: "yami",
           hashedPassword: bcrypt.hashSync("password"),
+          // adminKey: "roderick"
           firstName: "Yami",
           lastName: "Sukehiro",
+        },
+        {
+          email: "demo@user.io",
+          username: "demo",
+          hashedPassword: bcrypt.hashSync("password"),
+          firstName: "Demo",
+          lastName: "User",
         },
       ],
       { validate: true }

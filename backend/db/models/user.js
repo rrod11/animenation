@@ -61,6 +61,13 @@ module.exports = (sequelize, DataTypes) => {
           len: [60, 60],
         },
       },
+      // adminKey: {
+      //   type: DataTypes.STRING,
+      //   allowNull: true,
+      //   validate: {
+      //     len: [1, 60],
+      //   },
+      // },
     },
     {
       sequelize,
