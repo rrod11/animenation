@@ -55,7 +55,6 @@ router.post(
   [requireAuth, validatePostCreation],
   async (req, res, next) => {
     const { user } = req;
-    console.log("🚀 ~ file: posts.js:32 ~ router.post ~ user:", user);
     const { title, description, categoriesId } = req.body;
 
     const newPost = await Post.bulkCreate([
@@ -71,6 +70,7 @@ router.post(
         title,
       },
     });
+
     res.status(201).json(target.toJSON());
   }
 );
@@ -87,38 +87,45 @@ router.put("/:postId", async (req, res) => {
     description,
     categoriesId,
   });
+
   await target.save();
+
   const targetPost = await Post.findOne({
     where: {
       id: postId,
     },
   });
+
   res.json(targetPost);
 });
 
 router.get("/current", async (req, res) => {
   const { user } = req;
-  console.log("🚀 ~ file: posts.js:102 ~ router.get ~ user:", user.id);
   const posts = await Post.findAll({
     where: {
       userId: user.id,
     },
   });
+
   const postsJSON = posts.map((ele) => ele.toJSON());
+
   if (!postsJSON.length) {
     res.status(200).json({ message: "No posts at this time" });
   }
+
   for (let post of postsJSON) {
     const sum = await Review.sum("rating", {
       where: {
         postId: post.id,
       },
     });
+
     const total = await Review.count({
       where: {
         postId: post.id,
       },
     });
+
     if (!total) {
       post.avgRating = "No Ratings Yet";
     } else {
@@ -131,29 +138,30 @@ router.get("/current", async (req, res) => {
 
 router.get("/:postId", async (req, res) => {
   const postId = req.params.postId;
-  console.log("🚀 ~ file: posts.js:135 ~ router.get ~ postId:", postId);
   const target = await Post.findOne({
     where: {
       id: postId,
     },
   });
-  console.log("🚀 ~ file: posts.js:141 ~ router.get ~ target:", target);
 
   const sum = await Review.sum("rating", {
     where: {
       postId: target.id,
     },
   });
+
   const total = await Review.count({
     where: {
       postId: target.id,
     },
   });
+
   if (!total) {
     target.avgRating = "No Ratings Yet";
   } else {
     target.avgRating = sum / total;
   }
+
   res.status(200).json(target);
 });
 module.exports = router;
