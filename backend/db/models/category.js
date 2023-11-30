@@ -4,10 +4,10 @@ module.exports = (sequelize, DataTypes) => {
   class Category extends Model {
     static associate(models) {
       // define association here
-      Category.belongsToMany(models.BlogPost, {
+      Category.belongsToMany(models.Post, {
         through: "BlogCategory",
-        as: "Blog",
-        foreignKey: "blog_id",
+        foreignKey: "categoryId",
+        otherKey: "postId",
       });
     }
   }
@@ -17,9 +17,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      blog_id: {
-        type: DataTypes.INTEGER,
-      },
+      // blog_id: {
+      //   type: DataTypes.INTEGER,
+      // },
     },
     {
       sequelize,

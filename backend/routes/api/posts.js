@@ -1,0 +1,78 @@
+const express = require("express");
+const bcrypt = require("bcryptjs");
+const { check } = require("express-validator");
+const { handleValidationErrors } = require("../../utils/validation");
+const {
+  setTokenCookie,
+  requireAuth,
+  restoreUser,
+} = require("../../utils/auth.js");
+// const { setTokenCookie, requireAuth } = require("../../utils/auth");
+const { User, Post, Review } = require("../../db/models");
+const doesPostTitleExist = require("../../utils/doesPostTitleExist");
+
+const router = express.Router();
+
+const validatePostCreation = [
+  check("title")
+    .exists({ checkFalsy: true })
+    .isLength({ min: 3, max: 200 })
+    .withMessage("Please provide a valid title with at least 3 characters"),
+  check("description")
+    .exists({ checkFalsy: true })
+    .isLength({ min: 4, max: 2500 })
+    .withMessage(
+      "Please provide a description between 10 and 2500 characters."
+    ),
+  check("categoriesId")
+    .exists({ checkFalsy: true })
+    .withMessage("Please select at least one category"),
+
+  handleValidationErrors,
+];
+
+router.get("/", async (req, res) => {
+  const posts = await Post.findAll();
+  const postsJSON = posts.map((ele) => ele.toJSON());
+  for (let post of postsJSON) {
+    const sum = await Review.sum("rating", {
+      where: {
+        postId: post.id,
+      },
+    });
+    const total = await Review.count({
+      where: {
+        postId: post.id,
+      },
+    });
+    post.avgRating = sum / total;
+  }
+  res.status(200).json(postsJSON);
+});
+
+router.post(
+  "/",
+  [requireAuth, validatePostCreation],
+  async (req, res, next) => {
+    const { user } = req;
+    console.log("🚀 ~ file: posts.js:32 ~ router.post ~ user:", user);
+    const { title, description, categoriesId } = req.body;
+
+    const newPost = await Post.bulkCreate([
+      {
+        title,
+        description,
+        categoriesId,
+        userId: user.id,
+      },
+    ]);
+    const target = await Post.findOne({
+      where: {
+        title,
+      },
+    });
+    res.status(201).json(target.toJSON());
+  }
+);
+// router.put("/");
+module.exports = router;

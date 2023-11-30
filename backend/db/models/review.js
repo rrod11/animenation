@@ -5,10 +5,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Review.belongsTo(models.User, {
-        foreignKey: "user_id",
+        foreignKey: "userId",
       });
-      Review.belongsTo(models.BlogPost, {
-        foreignKey: "post_id",
+      Review.belongsTo(models.Post, {
+        foreignKey: "postId",
       });
     }
   }
@@ -21,10 +21,10 @@ module.exports = (sequelize, DataTypes) => {
           len: [3, 2000],
         },
       },
-      user_id: {
+      userId: {
         type: DataTypes.INTEGER,
       },
-      post_id: {
+      postId: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Review",
       defaultScope: {
         attributes: {
-          exclude: ["user_id", "post_id"],
+          exclude: ["userId", "postId"],
         },
       },
     }

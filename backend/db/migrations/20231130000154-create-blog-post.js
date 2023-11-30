@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === "production") {
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("BlogPosts", {
+    await queryInterface.createTable("Posts", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -16,23 +16,26 @@ module.exports = {
       },
       title: {
         type: Sequelize.STRING(200),
+        unique: true,
       },
       description: {
         type: Sequelize.STRING(2500),
       },
-      user_id: {
+      userId: {
         type: Sequelize.INTEGER,
-        // references: {
-        //   model: "Users",
-        //   key: "id",
-        // },
+        references: {
+          model: "Users",
+          key: "id",
+        },
+        onDelete: "CASCADE",
       },
-      categories_id: {
+      categoriesId: {
         type: Sequelize.INTEGER,
-        // references: {
-        //   model: "Categories",
-        //   key: "id",
-        // },
+        references: {
+          model: "Categories",
+          key: "id",
+        },
+        onDelete: "SET NULL",
       },
       createdAt: {
         allowNull: false,
@@ -47,7 +50,7 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = "BlogPosts";
+    options.tableName = "Posts";
     await queryInterface.dropTable(options);
   },
 };

@@ -8,10 +8,10 @@ module.exports = (sequelize, DataTypes) => {
   }
   BlogCategory.init(
     {
-      blog_id: {
+      postId: {
         type: DataTypes.INTEGER,
       },
-      category_id: {
+      categoryId: {
         type: DataTypes.INTEGER,
       },
     },

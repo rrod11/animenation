@@ -18,13 +18,13 @@ module.exports = {
         type: Sequelize.STRING(20),
         allowNull: false,
       },
-      blog_id: {
-        type: Sequelize.INTEGER,
-        // references: {
-        //   model: "Categories",
-        //   key: "id",
-        // },
-      },
+      // blog_id: {
+      //   type: Sequelize.INTEGER,
+      //   references: {
+      //     model: "BlogPosts",
+      //     key: "id",
+      //   },
+      // },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

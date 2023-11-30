@@ -12,16 +12,16 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await BlogCategory.bulkCreate([
       {
-        blog_id: "1",
-        category_id: "2",
+        postId: "1",
+        categoriesId: "2",
       },
       {
-        blog_id: "2",
-        category_id: "1",
+        postId: "2",
+        categoriesId: "1",
       },
       {
-        blog_id: "3",
-        category_id: "2",
+        postId: "3",
+        categoriesId: "2",
       },
     ]);
   },
@@ -32,7 +32,8 @@ module.exports = {
     return queryInterface.bulkDelete(
       options,
       {
-        blog_id: { [Op.in]: ["1", "2", "3", "4"] },
+        postId: { [Op.in]: ["1", "2", "3", "4"] },
+        // blog_id: { [Op.in]: ["1", "2", "3", "4"] },
       },
       {}
     );

@@ -2,24 +2,24 @@
 const { Model, Validator } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-  class BlogPost extends Model {
+  class Post extends Model {
     static associate(models) {
       // define association here
-      BlogPost.hasMany(models.Review, {
-        foreignKey: "post_id",
+      Post.hasMany(models.Review, {
+        foreignKey: "postId",
       });
-      BlogPost.belongsTo(models.User, {
-        foreignKey: "user_id",
+      Post.belongsTo(models.User, {
+        foreignKey: "userId",
       });
-      BlogPost.belongsToMany(models.Category, {
+      Post.belongsToMany(models.Category, {
         through: "BlogCategory",
-        as: "Categories",
-        foreignKey: "blog_id",
+        foreignKey: "postId",
+        other: "categoryId",
       });
     }
   }
 
-  BlogPost.init(
+  Post.init(
     {
       title: {
         type: DataTypes.STRING,
@@ -36,16 +36,16 @@ module.exports = (sequelize, DataTypes) => {
           len: [10, 2500],
         },
       },
-      user_id: {
+      userId: {
         type: DataTypes.INTEGER,
       },
-      categories_id: {
+      categoriesId: {
         type: DataTypes.INTEGER,
       },
     },
     {
       sequelize,
-      modelName: "BlogPost",
+      modelName: "Post",
       defaultScope: {
         attributes: {
           exclude: ["createdAt", "updatedAt"],
@@ -53,5 +53,5 @@ module.exports = (sequelize, DataTypes) => {
       },
     }
   );
-  return BlogPost;
+  return Post;
 };

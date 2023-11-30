@@ -14,11 +14,35 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      blog_id: {
+      // blog_id: {
+      //   type: Sequelize.INTEGER,
+      //   // references: {
+      //   //   model: "BlogPosts",
+      //   //   key: "id",
+      //   // },
+      // },
+      postId: {
         type: Sequelize.INTEGER,
+        references: {
+          model: "Posts",
+          key: "id",
+        },
+        onDelete: "CASCADE",
       },
-      category_id: {
+      // category_id: {
+      //   type: Sequelize.INTEGER,
+      //   // references: {
+      //   //   model: "Categories",
+      //   //   key: "id",
+      //   // },
+      // },
+      categoryId: {
         type: Sequelize.INTEGER,
+        references: {
+          model: "Categories",
+          key: "id",
+        },
+        onDelete: "SET NULL",
       },
       createdAt: {
         allowNull: false,
