@@ -8,6 +8,9 @@ module.exports = (sequelize, DataTypes) => {
       BlogPost.hasMany(models.Review, {
         foreignKey: "post_id",
       });
+      BlogPost.belongsTo(models.User, {
+        foreignKey: "user_id"
+      });
     }
   }
 
