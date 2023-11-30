@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       blog_id: {
         type: DataTypes.INTEGER,
-        allowNull: true,
       },
     },
     {

@@ -20,10 +20,10 @@ module.exports = {
       },
       blog_id: {
         type: Sequelize.INTEGER,
-        references: {
-          model: "Categories",
-          key: "id",
-        },
+        // references: {
+        //   model: "Categories",
+        //   key: "id",
+        // },
       },
       createdAt: {
         allowNull: false,
