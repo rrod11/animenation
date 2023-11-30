@@ -111,4 +111,38 @@ router.get("/current", async (req, res) => {
   res.status(200).json(reviewJSON);
 });
 
+router.get("/:postId", async (req, res) => {
+  const postId = req.params.postId;
+
+  const reviews = await Review.findAll({
+    where: {
+      postId,
+    },
+  });
+
+  const reviewJSON = reviews.map((ele) => ele.toJSON());
+
+  for (review of reviewJSON) {
+    const reviewUser = await User.findOne({
+      where: {
+        id: review.userId,
+      },
+    });
+
+    const post = await Post.findOne({
+      where: {
+        id: review.postId,
+      },
+    });
+
+    review.name = `${reviewUser.lastName}, ${reviewUser.firstName}`;
+    review.postTitle = post.title;
+
+    delete review.userId;
+    delete review.postId;
+  }
+
+  res.status(200).json(reviewJSON);
+});
+
 module.exports = router;
