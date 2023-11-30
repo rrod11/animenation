@@ -74,7 +74,7 @@ router.post(
     res.status(201).json(target.toJSON());
   }
 );
-router.put("/:postId", async (req, res) => {
+router.put("/:postId", validatePostCreation, async (req, res) => {
   const { title, description, categoriesId } = req.body;
   const postId = req.params.postId;
   const target = await Post.findOne({
