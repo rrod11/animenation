@@ -5,6 +5,9 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
       // define association here
+      User.hasMany(models.Review, {
+        foreignKey: "user_id",
+      });
     }
   }
 
@@ -61,13 +64,12 @@ module.exports = (sequelize, DataTypes) => {
           len: [60, 60],
         },
       },
-      // adminKey: {
-      //   type: DataTypes.STRING,
-      //   allowNull: true,
-      //   validate: {
-      //     len: [1, 60],
-      //   },
-      // },
+      adminKey: {
+        type: DataTypes.STRING,
+        validate: {
+          len: [1, 60],
+        },
+      },
     },
     {
       sequelize,

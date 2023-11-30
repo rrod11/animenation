@@ -4,6 +4,12 @@ module.exports = (sequelize, DataTypes) => {
   class Review extends Model {
     static associate(models) {
       // define association here
+      Review.belongsTo(models.User, {
+        foreignKey: "user_id",
+      });
+      Review.belongsTo(models.BlogPost, {
+        foreignKey: "post_id",
+      });
     }
   }
   Review.init(

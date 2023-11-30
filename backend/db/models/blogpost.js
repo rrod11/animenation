@@ -5,6 +5,9 @@ module.exports = (sequelize, DataTypes) => {
   class BlogPost extends Model {
     static associate(models) {
       // define association here
+      BlogPost.hasMany(models.Review, {
+        foreignKey: "post_id",
+      });
     }
   }
 
