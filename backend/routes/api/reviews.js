@@ -10,6 +10,7 @@ const {
 // const { setTokenCookie, requireAuth } = require("../../utils/auth");
 const { User, Post, Review } = require("../../db/models");
 const review = require("../../db/models/review");
+const entitledR = require("../../utils/ownershipR");
 const router = express.Router();
 
 const validateReviewCreation = [
@@ -146,28 +147,32 @@ router.get("/:postId", async (req, res) => {
   res.status(200).json(reviewJSON);
 });
 
-router.put("/:reviewId", validateReviewCreation, async (req, res) => {
-  const { review, rating } = req.body;
-  const reviewId = req.params.reviewId;
-  const target = await Review.findOne({
-    where: {
-      id: reviewId,
-    },
-  });
-  target.set({
-    review,
-    rating,
-  });
-  await target.save();
-  const targetReview = await Review.findOne({
-    where: {
-      id: reviewId,
-    },
-  });
-  res.json(targetReview);
-});
+router.put(
+  "/:reviewId",
+  [validateReviewCreation, requireAuth, entitledR],
+  async (req, res) => {
+    const { review, rating } = req.body;
+    const reviewId = req.params.reviewId;
+    const target = await Review.findOne({
+      where: {
+        id: reviewId,
+      },
+    });
+    target.set({
+      review,
+      rating,
+    });
+    await target.save();
+    const targetReview = await Review.findOne({
+      where: {
+        id: reviewId,
+      },
+    });
+    res.json(targetReview);
+  }
+);
 
-router.delete("/:reviewId", requireAuth, async (req, res) => {
+router.delete("/:reviewId", [requireAuth, entitledR], async (req, res) => {
   const reviewId = req.params.reviewId;
   const target = await Review.findOne({
     where: {
