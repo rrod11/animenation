@@ -31,6 +31,9 @@ const validateReviewCreation = [
 router.get("/", async (req, res) => {
   const reviews = await Review.findAll();
   const reviewJSON = reviews.map((ele) => ele.toJSON());
+  if (!reviews.length) {
+    res.status(200).json({ message: "No Reviews at this Time" });
+  }
 
   for (let review of reviewJSON) {
     const reviewUser = await User.findOne({
