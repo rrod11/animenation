@@ -164,4 +164,17 @@ router.get("/:postId", async (req, res) => {
 
   res.status(200).json(target);
 });
+
+router.delete("/:postId", requireAuth, async (req, res) => {
+  const postId = req.params.postId;
+  const target = Post.findOne({
+    where: {
+      id: postId,
+    },
+  });
+
+  await target.destroy();
+
+  res.json({ message: `Successfully delete Post #${spotId}` });
+});
 module.exports = router;
