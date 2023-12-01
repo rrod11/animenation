@@ -9,6 +9,7 @@ const {
 } = require("../../utils/auth.js");
 // const { setTokenCookie, requireAuth } = require("../../utils/auth");
 const { User, Post, Review } = require("../../db/models");
+const review = require("../../db/models/review");
 const router = express.Router();
 
 const validateReviewCreation = [
@@ -166,4 +167,16 @@ router.put("/:reviewId", validateReviewCreation, async (req, res) => {
   res.json(targetReview);
 });
 
+router.delete("/:reviewId", requireAuth, async (req, res) => {
+  const reviewId = req.params.reviewId;
+  const target = await Review.findOne({
+    where: {
+      id: reviewId,
+    },
+  });
+
+  await target.destroy();
+
+  res.json({ message: `Successfully deleted Post #${reviewId}` });
+});
 module.exports = router;

@@ -175,6 +175,6 @@ router.delete("/:postId", requireAuth, async (req, res) => {
 
   await target.destroy();
 
-  res.json({ message: `Successfully delete Post #${postId}` });
+  res.json({ message: `Successfully deleted Post #${postId}` });
 });
 module.exports = router;
