@@ -11,6 +11,7 @@ const {
 const { User, Post, Review } = require("../../db/models");
 const review = require("../../db/models/review");
 const entitledR = require("../../utils/ownershipR");
+const existingR = require("../../utils/reviewExistence");
 const router = express.Router();
 
 const validateReviewCreation = [
@@ -31,7 +32,8 @@ const validateReviewCreation = [
 router.get("/", async (req, res) => {
   const reviews = await Review.findAll();
   const reviewJSON = reviews.map((ele) => ele.toJSON());
-  if (!reviews.length) {
+
+  if (!reviewJSON.length) {
     res.status(200).json({ message: "No Reviews at this Time" });
   }
 
@@ -94,7 +96,11 @@ router.get("/current", async (req, res) => {
   });
   const reviewJSON = reviews.map((ele) => ele.toJSON());
 
-  for (review of reviewJSON) {
+  if (!reviewJSON.length) {
+    res.status(200).json({ message: "No Reviews at this Time" });
+  }
+
+  for (let review of reviewJSON) {
     const reviewUser = await User.findOne({
       where: {
         id: review.userId,
@@ -127,7 +133,11 @@ router.get("/:postId", async (req, res) => {
 
   const reviewJSON = reviews.map((ele) => ele.toJSON());
 
-  for (review of reviewJSON) {
+  if (!reviewJSON.length) {
+    res.status(200).json({ message: "No Reviews at this Time" });
+  }
+
+  for (let review of reviewJSON) {
     const reviewUser = await User.findOne({
       where: {
         id: review.userId,
@@ -152,7 +162,7 @@ router.get("/:postId", async (req, res) => {
 
 router.put(
   "/:reviewId",
-  [validateReviewCreation, requireAuth, entitledR],
+  [requireAuth, existingR, entitledR, validateReviewCreation],
   async (req, res) => {
     const { review, rating } = req.body;
     const reviewId = req.params.reviewId;

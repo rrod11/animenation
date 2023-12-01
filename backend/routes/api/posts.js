@@ -11,6 +11,7 @@ const {
 const { User, Post, Review } = require("../../db/models");
 const doesPostTitleExist = require("../../utils/doesPostTitleExist");
 const entitledP = require("../../utils/ownershipP");
+const existingP=require("../../utils/postExistence");
 
 const router = express.Router();
 
@@ -35,6 +36,11 @@ const validatePostCreation = [
 router.get("/", async (req, res) => {
   const posts = await Post.findAll();
   const postsJSON = posts.map((ele) => ele.toJSON());
+
+  if (!postsJSON.length) {
+    res.status(200).json({ message: "No posts at this time" });
+  }
+
   for (let post of postsJSON) {
     const sum = await Review.sum("rating", {
       where: {
@@ -77,7 +83,7 @@ router.post(
 );
 router.put(
   "/:postId",
-  [requireAuth, entitledP, validatePostCreation],
+  [requireAuth, existingP,entitledP, validatePostCreation],
   async (req, res) => {
     const { title, description, categoriesId } = req.body;
     const postId = req.params.postId;
