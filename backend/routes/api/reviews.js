@@ -145,4 +145,25 @@ router.get("/:postId", async (req, res) => {
   res.status(200).json(reviewJSON);
 });
 
+router.put("/:reviewId", validateReviewCreation, async (req, res) => {
+  const { review, rating } = req.body;
+  const reviewId = req.params.reviewId;
+  const target = await Review.findOne({
+    where: {
+      id: reviewId,
+    },
+  });
+  target.set({
+    review,
+    rating,
+  });
+  await target.save();
+  const targetReview = await Review.findOne({
+    where: {
+      id: reviewId,
+    },
+  });
+  res.json(targetReview);
+});
+
 module.exports = router;
