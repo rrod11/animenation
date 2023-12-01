@@ -22,7 +22,31 @@ module.exports = {
           name: "Comedy",
         },
         {
-          name: "Reincarnation",
+          name: "Drama",
+        },
+        {
+          name: "Harem",
+        },
+        {
+          name: "Horror",
+        },
+        {
+          name: "Historical",
+        },
+        {
+          name: "Parody",
+        },
+        {
+          name: "Romance",
+        },
+        {
+          name: "Psychological",
+        },
+        {
+          name: "Sci-Fi",
+        },
+        {
+          name: "School",
         },
       ],
       { validate: true }
@@ -35,7 +59,22 @@ module.exports = {
     return queryInterface.bulkDelete(
       options,
       {
-        name: { [Op.in]: ["Action", "Adventure", "Comedy", "Reincarnation"] },
+        name: {
+          [Op.in]: [
+            "Action",
+            "Adventure",
+            "Comedy",
+            "Drama",
+            "Harem",
+            "Horror",
+            "Historical",
+            "Parody",
+            "Romance",
+            "Psychological",
+            "Sci-Fi",
+            "School",
+          ],
+        },
       },
       {}
     );
