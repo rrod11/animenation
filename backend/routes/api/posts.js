@@ -167,7 +167,7 @@ router.get("/:postId", async (req, res) => {
 
 router.delete("/:postId", requireAuth, async (req, res) => {
   const postId = req.params.postId;
-  const target = Post.findOne({
+  const target = await Post.findOne({
     where: {
       id: postId,
     },
@@ -175,6 +175,6 @@ router.delete("/:postId", requireAuth, async (req, res) => {
 
   await target.destroy();
 
-  res.json({ message: `Successfully delete Post #${spotId}` });
+  res.json({ message: `Successfully delete Post #${postId}` });
 });
 module.exports = router;
