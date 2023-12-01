@@ -1,14 +1,13 @@
-const { Post, User, Review } = require("../db/models");
-const entitledR = async (req, _res, next) => {
-  const reviewId = req.params.reviewId;
+const { Post } = require("../db/models");
+const entitledP = async (req, _res, next) => {
+  const postId = req.params.postId;
   const { user } = req;
-  console.log("🚀 ~ file: ownershipR.js:5 ~ entitledR ~ user:", user);
   const err = {};
   err.message = "Forbidden";
 
-  const target = await Review.findOne({
+  const target = await Post.findOne({
     where: {
-      id: reviewId,
+      id: postId,
     },
   });
 
@@ -25,4 +24,4 @@ const entitledR = async (req, _res, next) => {
   }
 };
 
-module.exports = entitledR;
+module.exports = entitledP;

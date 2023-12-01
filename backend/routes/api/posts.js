@@ -10,6 +10,7 @@ const {
 // const { setTokenCookie, requireAuth } = require("../../utils/auth");
 const { User, Post, Review } = require("../../db/models");
 const doesPostTitleExist = require("../../utils/doesPostTitleExist");
+const entitledP = require("../../utils/ownershipP");
 
 const router = express.Router();
 
@@ -74,30 +75,34 @@ router.post(
     res.status(201).json(target.toJSON());
   }
 );
-router.put("/:postId", validatePostCreation, async (req, res) => {
-  const { title, description, categoriesId } = req.body;
-  const postId = req.params.postId;
-  const target = await Post.findOne({
-    where: {
-      id: postId,
-    },
-  });
-  target.set({
-    title,
-    description,
-    categoriesId,
-  });
+router.put(
+  "/:postId",
+  [requireAuth, entitledP, validatePostCreation],
+  async (req, res) => {
+    const { title, description, categoriesId } = req.body;
+    const postId = req.params.postId;
+    const target = await Post.findOne({
+      where: {
+        id: postId,
+      },
+    });
+    target.set({
+      title,
+      description,
+      categoriesId,
+    });
 
-  await target.save();
+    await target.save();
 
-  const targetPost = await Post.findOne({
-    where: {
-      id: postId,
-    },
-  });
+    const targetPost = await Post.findOne({
+      where: {
+        id: postId,
+      },
+    });
 
-  res.json(targetPost);
-});
+    res.json(targetPost);
+  }
+);
 
 router.get("/current", async (req, res) => {
   const { user } = req;
@@ -165,7 +170,7 @@ router.get("/:postId", async (req, res) => {
   res.status(200).json(target);
 });
 
-router.delete("/:postId", requireAuth, async (req, res) => {
+router.delete("/:postId", [requireAuth, entitledP], async (req, res) => {
   const postId = req.params.postId;
   const target = await Post.findOne({
     where: {

@@ -29,10 +29,10 @@ const validateReviewCreation = [
 ];
 
 router.get("/", async (req, res) => {
-  const reviews = await Review.findAll({});
+  const reviews = await Review.findAll();
   const reviewJSON = reviews.map((ele) => ele.toJSON());
 
-  for (review of reviewJSON) {
+  for (let review of reviewJSON) {
     const reviewUser = await User.findOne({
       where: {
         id: review.userId,
