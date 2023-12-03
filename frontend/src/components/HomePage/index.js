@@ -7,11 +7,13 @@ import { allTheUsers } from "../../store/user";
 
 function HomePage({ isLoaded }) {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  console.log("🚀 ~ file: index.js:10 ~ HomePage ~ user:", user);
+  const user = useSelector((state) => state.session);
+  console.log("🚀 ~ file: index.js:11 ~ HomePage ~ user:", user);
+  const users = useSelector((state) => state.user);
+  console.log("🚀 ~ file: index.js:10 ~ HomePage ~ users:", users);
   const posts = useSelector((state) => state.post);
   const postArr = Object.values(posts);
-  postArr?.forEach((post) => (post.user = user[post.userId]));
+  postArr?.forEach((post) => (post.user = users[post.userId]));
   console.log("🚀 ~ file: index.js:15 ~ HomePage ~ postArr:", postArr);
   useEffect(() => {
     dispatch(allThePosts());
