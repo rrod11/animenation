@@ -161,7 +161,7 @@ const postReducer = (state = initialState, action) => {
   switch (action.type) {
     case ALL_POSTS: {
       const postData = {};
-      action.payload.Posts.forEach((post) => {
+      action.payload.forEach((post) => {
         postData[post.id] = post;
       });
       return postData;

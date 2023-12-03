@@ -1,11 +1,11 @@
 const express = require("express");
 const { Op } = require("sequelize");
 const bcrypt = require("bcryptjs");
+const { User } = require("../../db/models");
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 
 const { setTokenCookie, restoreUser } = require("../../utils/auth");
-const { User } = require("../../db/models");
 
 const router = express.Router();
 
@@ -20,6 +20,12 @@ const validateLogin = [
   handleValidationErrors,
 ];
 
+router.get("/all", async (req, res, next) => {
+  console.log("BACKEND REACHED?");
+  const users = await User.unscoped().findAll();
+  const usersJSON = users.map((ele) => ele.toJSON());
+  res.status(200).json(usersJSON);
+});
 router.post("/", validateLogin, async (req, res, next) => {
   const { credential, password } = req.body;
 
